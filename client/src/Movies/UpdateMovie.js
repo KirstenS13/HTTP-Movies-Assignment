@@ -7,7 +7,8 @@ const UpdateMovie = props => {
 
     const { push } = useHistory();
     const { id } = useParams();
-    const [movie, setMovie] = useState({
+    const numberId = Number(id);
+    const [theMovie, setTheMovie] = useState({
         title: "",
         director: "",
         metascore: "",
@@ -24,13 +25,14 @@ const UpdateMovie = props => {
             .catch(err => {
                 console.log("err from UpdateMovie.js",err);
             }) */
-        console.log(props.movieList);
-        const movie = props.movieList.filter(movie => movie.id === id);
-        console.log(movie);
+        const movie = props.movieList.filter(movie => movie.id === numberId);
+        console.log("movie in UpdateMovie.js",movie);
+        console.log("id in UpdateMovie.js from useParams", id);
+        setTheMovie(movie[0]);
     }, [id, props.movieList]);
 
     const handleChanges = e => {
-        setMovie({ ...movie, [e.target.name]: e.target.value });
+        setTheMovie({ ...theMovie, [e.target.name]: e.target.value });
     }
 
     const updateMovie = e => {
@@ -39,10 +41,16 @@ const UpdateMovie = props => {
         //pass in new state
     }
 
+    
+
     return (
         <form>
+            <p>{theMovie.director}</p>
+            <p>{theMovie.title}</p>
+            <p>{theMovie.id}</p>
+            <p>{theMovie.metascore}</p>
             <label htmlFor="title">
-                Movie Title
+                Title: 
                 <input 
                     type="text"
                     id="title"
@@ -51,7 +59,7 @@ const UpdateMovie = props => {
                 />
             </label>
             <label htmlFor="director">
-                Director
+                Director: 
                 <input 
                     type="text"
                     id="director"
@@ -60,7 +68,7 @@ const UpdateMovie = props => {
                 />
             </label>
             <label htmlFor="metascore">
-                Metascore
+                Metascore: 
                 <input 
                     type="text"
                     id="metascore"
@@ -69,7 +77,7 @@ const UpdateMovie = props => {
                 />
             </label>
             <label htmlFor="star">
-                Stars
+                Stars: 
                 <input 
                     type="text"
                     id="star"
@@ -77,7 +85,7 @@ const UpdateMovie = props => {
                     onChange={handleChanges}
                 />
             </label>
-            <button onClick={updateMovie}>Update Movie</button>
+            <button onClick={updateMovie}>Update</button>
         </form>
     )
 };
