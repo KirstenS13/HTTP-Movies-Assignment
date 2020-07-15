@@ -29,11 +29,10 @@ const UpdateMovie = props => {
         console.log("movie in UpdateMovie.js",movie);
         console.log("id in UpdateMovie.js from useParams", id);
         setTheMovie(movie[0]); */
-    }, []);
+    }, [id]);
 
     const handleChanges = e => {
-        
-        e.target.name === "star" ? setTheMovie({ ...theMovie, stars: theMovie.stars.push(e.target.value)}) : setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
+        setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
     }
 
     const updateMovie = e => {
@@ -44,6 +43,13 @@ const UpdateMovie = props => {
             .put(`http://localhost:5000/api/movies/${id}`, theMovie)
             .then(res => {
                 console.log('res from put request', res);
+                setTheMovie({
+                    title: "",
+                    director: "",
+                    metascore: "",
+                    stars: []
+                });
+                push("/");
             })
             .catch(err => {
                 console.log('err from put request', err);
@@ -82,16 +88,7 @@ const UpdateMovie = props => {
                     value={theMovie.metascore}
                 />
             </label>
-            <label htmlFor="star">
-                Stars: 
-            </label>
-            <input 
-                type="text"
-                id="star"
-                name="star"
-                onChange={handleChanges}
-                value={theMovie.stars}
-            />
+            
             <button onClick={updateMovie}>Update</button>
         </form>
     )
