@@ -3,8 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const UpdateMovie = props => {
-    console.log('props in UpdateMovie', props);
-
     const { push } = useHistory();
     const { id } = useParams();
     const numberId = Number(id);
@@ -29,10 +27,10 @@ const UpdateMovie = props => {
         console.log("movie in UpdateMovie.js",movie);
         console.log("id in UpdateMovie.js from useParams", id);
         setTheMovie(movie[0]); */
-    }, [id]);
+    }, []);
 
     const handleChanges = e => {
-        setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
+        e.target.name === "stars" ? setTheMovie({ ...theMovie, stars: e.target.value}) : setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
     }
 
     const updateMovie = e => {
@@ -88,7 +86,14 @@ const UpdateMovie = props => {
                     value={theMovie.metascore}
                 />
             </label>
-            
+            <label htmlFor="stars">Stars:</label>
+            <input 
+                type="text"
+                id="stars"
+                name="stars"
+                onChange={handleChanges}
+                value={theMovie.stars}
+            />
             <button onClick={updateMovie}>Update</button>
         </form>
     )
