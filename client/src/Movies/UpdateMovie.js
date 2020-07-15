@@ -14,41 +14,44 @@ const UpdateMovie = props => {
         metascore: "",
         stars: []
     });
-    const [newStar, setNewStar] = useState("");
 
     useEffect(() => {
-        /* axios
+        axios
             .get(`http://localhost:5000/api/movies/${id}`)
             .then(res => {
                 console.log('res from UpdateMovie.js', res);
+                setTheMovie(res.data);
             })
             .catch(err => {
                 console.log("err from UpdateMovie.js",err);
-            }) */
-        const movie = props.movieList.filter(movie => movie.id === numberId);
+            })
+        /* const movie = props.movieList.filter(movie => movie.id === numberId);
         console.log("movie in UpdateMovie.js",movie);
         console.log("id in UpdateMovie.js from useParams", id);
-        setTheMovie(movie[0]);
-    }, [id, props.movieList]);
+        setTheMovie(movie[0]); */
+    }, []);
 
     const handleChanges = e => {
-        setTheMovie({ ...theMovie, [e.target.name]: e.target.value });
+        
+        e.target.name === "star" ? setTheMovie({ ...theMovie, stars: theMovie.stars.push(e.target.value)}) : setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
     }
 
     const updateMovie = e => {
         e.preventDefault();
         //axios put request
         //pass in new state
+        axios
+            .put(`http://localhost:5000/api/movies/${id}`, theMovie)
+            .then(res => {
+                console.log('res from put request', res);
+            })
+            .catch(err => {
+                console.log('err from put request', err);
+            })
     }
-
-    
 
     return (
         <form>
-            <p>{theMovie.director}</p>
-            <p>{theMovie.title}</p>
-            <p>{theMovie.id}</p>
-            <p>{theMovie.metascore}</p>
             <label htmlFor="title">
                 Title: 
                 <input 
@@ -56,6 +59,7 @@ const UpdateMovie = props => {
                     id="title"
                     name="title"
                     onChange={handleChanges}
+                    value={theMovie.title}
                 />
             </label>
             <label htmlFor="director">
@@ -65,6 +69,7 @@ const UpdateMovie = props => {
                     id="director"
                     name="director"
                     onChange={handleChanges}
+                    value={theMovie.director}
                 />
             </label>
             <label htmlFor="metascore">
@@ -74,17 +79,19 @@ const UpdateMovie = props => {
                     id="metascore"
                     name="metascore"
                     onChange={handleChanges}
+                    value={theMovie.metascore}
                 />
             </label>
             <label htmlFor="star">
                 Stars: 
-                <input 
-                    type="text"
-                    id="star"
-                    name="star"
-                    onChange={handleChanges}
-                />
             </label>
+            <input 
+                type="text"
+                id="star"
+                name="star"
+                onChange={handleChanges}
+                value={theMovie.stars}
+            />
             <button onClick={updateMovie}>Update</button>
         </form>
     )
