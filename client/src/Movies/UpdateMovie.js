@@ -32,31 +32,22 @@ const UpdateMovie = props => {
     const handleChanges = e => {
         if (e.target.name === "star") {
             const starsCopy = [ ...theMovie.stars ];
-            const targetedStar = e.target.id;
             let selectedStar = starsCopy.filter((star, i) => {
-                return (targetedStar === `star${i}`)
+                return (e.target.id === `star${i}`)
             });
             selectedStar = e.target.value;
             setTheMovie({ ...theMovie, stars: (theMovie.stars.map((star, i) => {
                 if (e.target.id === `star${i}`) {
                     return selectedStar;
-            } else {
-                return star;
-            }}))});
-            console.log("starsCopy", starsCopy);
-            console.log("selectedStar", selectedStar);
+                } else {
+                    return star;
+                }
+            }))});
+            /* console.log("starsCopy", starsCopy);
+            console.log("selectedStar", selectedStar); */
         } else {
             setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
         }
-        
-        
-        /* theMovie.stars.map((star, i) => {
-            if (e.target.id === i) {
-                const newStar = e.target.value;
-                console.log("newStar", newStar);
-                return newStar;
-            }
-        }) */ 
     }
 
     const updateMovie = e => {
@@ -82,6 +73,7 @@ const UpdateMovie = props => {
 
     return (
         <form>
+            <h3>Update the Movie</h3>
             <label htmlFor="title">
                 Title: 
                 <input 
@@ -120,7 +112,6 @@ const UpdateMovie = props => {
                 onChange={handleChanges}
                 value={theMovie.stars[0]}
             />
-            <button>Update Star</button>
             <label htmlFor="star1">Stars:</label>
             <input 
                 type="text"
@@ -129,7 +120,6 @@ const UpdateMovie = props => {
                 onChange={handleChanges}
                 value={theMovie.stars[1]}
             />
-            <button>Update Star</button>
             <label htmlFor="star2">Stars:</label>
             <input 
                 type="text"
@@ -138,7 +128,6 @@ const UpdateMovie = props => {
                 onChange={handleChanges}
                 value={theMovie.stars[2]}
             />
-            <button>Update Star</button>
             <button onClick={updateMovie}>Update Movie</button>
         </form>
     )
