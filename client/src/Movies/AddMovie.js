@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const AddMovie = () => {
+    const { push } = useHistory();
     const [newMovie, setNewMovie] = useState({
         title: "",
         director: "",
@@ -31,7 +33,31 @@ const AddMovie = () => {
             setNewMovie({ ...newMovie, [e.target.name]: e.target.value });
             console.log('newMovie in AddMovie.js', newMovie);
         }
-    }
+    };
+
+    const addMovie = e => {
+        e.preventDefault();
+        axios
+            .post("http://localhost:5000/api/movies", newMovie)
+            .then(res => {
+                console.log("res", res);
+                setNewMovie({
+                    title: "",
+                    director: "",
+                    id: "",
+                    metascore: "",
+                    stars: [
+                        "",
+                        "",
+                        ""
+                    ]
+                });
+                push("/");
+            })
+            .catch(err => {
+                console.log("err", err);
+            })
+    };
 
     return (
         <form>
@@ -90,7 +116,7 @@ const AddMovie = () => {
                 value={newMovie.stars[2]}
                 onChange={handleChanges}
             />
-            <button>Add Movie</button>
+            <button onClick={addMovie}>Add Movie</button>
         </form>
     )
 }
