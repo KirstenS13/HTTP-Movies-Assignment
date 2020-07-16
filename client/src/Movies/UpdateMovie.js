@@ -27,10 +27,36 @@ const UpdateMovie = props => {
         console.log("movie in UpdateMovie.js",movie);
         console.log("id in UpdateMovie.js from useParams", id);
         setTheMovie(movie[0]); */
-    }, []);
+    }, [id]);
 
     const handleChanges = e => {
-        e.target.name === "stars" ? setTheMovie({ ...theMovie, stars: e.target.value}) : setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
+        if (e.target.name === "star") {
+            const starsCopy = [ ...theMovie.stars ];
+            const targetedStar = e.target.id;
+            let selectedStar = starsCopy.filter((star, i) => {
+                return (targetedStar === `star${i}`)
+            });
+            selectedStar = e.target.value;
+            setTheMovie({ ...theMovie, stars: (theMovie.stars.map((star, i) => {
+                if (e.target.id === `star${i}`) {
+                    return selectedStar;
+            } else {
+                return star;
+            }}))});
+            console.log("starsCopy", starsCopy);
+            console.log("selectedStar", selectedStar);
+        } else {
+            setTheMovie({ ...theMovie, [e.target.name]: e.target.value});
+        }
+        
+        
+        /* theMovie.stars.map((star, i) => {
+            if (e.target.id === i) {
+                const newStar = e.target.value;
+                console.log("newStar", newStar);
+                return newStar;
+            }
+        }) */ 
     }
 
     const updateMovie = e => {
@@ -86,15 +112,34 @@ const UpdateMovie = props => {
                     value={theMovie.metascore}
                 />
             </label>
-            <label htmlFor="stars">Stars:</label>
+            <label htmlFor="star0">Stars:</label>
             <input 
                 type="text"
-                id="stars"
-                name="stars"
+                id="star0"
+                name="star"
                 onChange={handleChanges}
-                value={theMovie.stars}
+                value={theMovie.stars[0]}
             />
-            <button onClick={updateMovie}>Update</button>
+            <button>Update Star</button>
+            <label htmlFor="star1">Stars:</label>
+            <input 
+                type="text"
+                id="star1"
+                name="star"
+                onChange={handleChanges}
+                value={theMovie.stars[1]}
+            />
+            <button>Update Star</button>
+            <label htmlFor="star2">Stars:</label>
+            <input 
+                type="text"
+                id="star2"
+                name="star"
+                onChange={handleChanges}
+                value={theMovie.stars[2]}
+            />
+            <button>Update Star</button>
+            <button onClick={updateMovie}>Update Movie</button>
         </form>
     )
 };
